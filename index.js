@@ -17,7 +17,7 @@ app.use("/skills", skillRoutes);
 app.use("/users", userRoutes);
 app.use("/messages", messageRoutes);
 app.use("/projects", projetRoutes);
-app.use("/experiences", TestimonialRoutes);
+app.use("/testimonial", TestimonialRoutes);
 
 
 const connect = async () =>{
