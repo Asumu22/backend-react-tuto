@@ -1,46 +1,39 @@
-const express = require("express");
-const cors = require("cors");
-require("dotenv").config();
-const mongoose = require('mongoose');
-const bodyParser = require("body-parser");
-const projetRoutes = require("./routes/ProjetRoutes");
-const skillRoutes = require("./routes/SkillRoutes");
-const userRoutes = require("./routes/UserRoutes");
-const messageRoutes = require("./routes/MessageRoutes");
-const TestimonialRoutes = require("./routes/TestimonialRoutes");
-
-
+const express = require('express');
 const app = express();
+const mongoose = require('mongoose');
+const { MONGO_DB_CONFIG } = require("./config/app.config");
+const cors = require('cors');
+
+// Connection to MongoDB
+mongoose.connect(MONGO_DB_CONFIG.DB, {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+})
+  .then(() => {
+    console.log('Connected to MongoDB');
+  })
+  .catch((error) => {
+    console.log(MONGO_DB_CONFIG.DB);
+    console.error('Error connecting to MongoDB:', error);
+  });
+
+
+// Enable CORS
 app.use(cors());
-app.use(bodyParser.json());
 
-app.use("/skills", skillRoutes);
-app.use("/users", userRoutes);
-app.use("/messages", messageRoutes);
-app.use("/projects", projetRoutes);
-app.use("/testimonial", TestimonialRoutes);
+// Middleware to parse JSON data
+app.use(express.json());
+
+// Define a route to fetch the data
+app.use('/api', require("./router/app.route"));
 
 
-const connect = async () =>{
-try {
-  await mongoose.connect(process.env.MONGO);
-  console.log('Connected to MongoDB')
-} catch (error) {
-  throw error;
-}
-};
 
-mongoose.connection.on('disconnected', err => {
-  console.log('MongoDB disconnected');
-});
 
-mongoose.connection.on('connected', err => {
-  console.log('MongoDB connected');
-});
 
-app.listen(process.env.PORT || 3000, () =>{
-  connect()
-  console.log(`server is running in port ${process.env.PORT}`)
+// Start the server
+app.listen(8000, () => {
+  console.log('Server started on port 8000');
 });
 
 
