@@ -9,6 +9,7 @@ const userRoutes = require("./routes/UserRoutes");
 const messageRoutes = require("./routes/MessageRoutes");
 const TestimonialRoutes = require("./routes/TestimonialRoutes");
 
+
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
@@ -37,7 +38,7 @@ mongoose.connection.on('connected', err => {
   console.log('MongoDB connected');
 });
 
-app.listen(process.env.PORT, () =>{
+app.listen(process.env.PORT || 3000, () =>{
   connect()
   console.log(`server is running in port ${process.env.PORT}`)
 });
